@@ -18,9 +18,9 @@
 
 node {
     def app
-    def MAVEN_OPTS = "-Djava.awt.headless=true"
-    def MAVEN_CLI_OPTS = "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository --batch-mode"
-  I def MAGE_NAME = "flowable-engage"
+//     def MAVEN_OPTS = "-Djava.awt.headless=true"
+//     def MAVEN_CLI_OPTS = "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository --batch-mode"
+//   I def MAGE_NAME = "flowable-engage"
 
     stage('Clone repository') {
         /* Let's make sure we have the repository cloned to our workspace */

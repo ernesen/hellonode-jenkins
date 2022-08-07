@@ -1,0 +1,212 @@
+---
+stages:
+- ".pre"
+- build
+- dockerize
+- deploy
+- clean
+- ".post"
+services:
+- docker:dind
+variables:
+  MAVEN_OPTS: "-Djava.awt.headless=true"
+  MAVEN_CLI_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository --batch-mode"
+  IMAGE_NAME: flowable-engage
+build:
+  stage: build
+  when: manual
+  image: "${CI_REGISTRY}/sp_git_repo/flowablesynpulse:jdk14"
+  cache:
+    paths:
+    - ".m2/"
+  script:
+  - echo ${IMAGE_NAME}
+  - mkdir -p .m2/repository
+  - du -h -d1 .m2/repository
+  - cp settings.xml ~/.m2/settings.xml
+  - mvn $MAVEN_CLI_OPTS clean package -DskipTests -Dfrontend-dependency
+  artifacts:
+    when: on_success
+    expire_in: 1 day
+    paths:
+    - engage-app/target/*.jar
+build-custom-ui:
+  stage: build
+  when: manual
+  image: "${CI_REGISTRY}/sp_git_repo/flowablesynpulse:jdk14"
+  except:
+  - master
+  cache:
+    paths:
+    - ".m2/"
+  script:
+  - echo ${IMAGE_NAME}
+  - mkdir -p .m2/repository
+  - du -h -d1 .m2/repository
+  - cp settings.xml ~/.m2/settings.xml
+  - cp --verbose -a env/uioverride/${CI_COMMIT_BRANCH}/engage-app/. engage-app/src/main/resources/
+  - mvn $MAVEN_CLI_OPTS clean package -DskipTests -Dfrontend-dependency
+  artifacts:
+    when: on_success
+    expire_in: 1 day
+    paths:
+    - engage-app/target/*.jar
+dockerize:
+  image: docker:latest
+  stage: dockerize
+  when: manual
+  dependencies:
+  - build
+  only:
+  - master
+  before_script:
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+  - cd engage-app
+  - mv target/*.jar app.jar
+  - docker build -t ${IMAGE_NAME} -f Dockerfile .
+  - docker tag ${IMAGE_NAME} ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:latest
+  - docker tag ${IMAGE_NAME} ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${CI_PIPELINE_ID}
+  - docker push ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:latest
+  - docker push ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${CI_PIPELINE_ID}
+dockerize-dev:
+  image: docker:latest
+  stage: dockerize
+  when: on_success
+  only:
+  - development
+  dependencies:
+  - build
+  before_script:
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+  - cd engage-app
+  - mv target/*.jar app.jar
+  - docker build -t ${IMAGE_NAME} -f Dockerfile .
+  - docker tag ${IMAGE_NAME} ${CI_REGISTRY_IMAGE}/$CI_COMMIT_BRANCH/${IMAGE_NAME}:latest
+  - docker tag ${IMAGE_NAME} ${CI_REGISTRY_IMAGE}/$CI_COMMIT_BRANCH/${IMAGE_NAME}:${CI_PIPELINE_ID}
+  - docker push ${CI_REGISTRY_IMAGE}/$CI_COMMIT_BRANCH/${IMAGE_NAME}:latest
+  - docker push ${CI_REGISTRY_IMAGE}/$CI_COMMIT_BRANCH/${IMAGE_NAME}:${CI_PIPELINE_ID}
+dockerize-custom-ui:
+  image: docker:latest
+  stage: dockerize
+  when: manual
+  except:
+  - master
+  dependencies:
+  - build-custom-ui
+  before_script:
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+  - cd engage-app
+  - mv target/*.jar app.jar
+  - docker build -t ${IMAGE_NAME} -f Dockerfile .
+  - docker tag ${IMAGE_NAME} ${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:UI-${CI_PIPELINE_ID}
+  - docker push ${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:UI-${CI_PIPELINE_ID}
+deploy:
+  image: registry.gitlab.com/sp_git_repo/flowable-kube-runner/kubectl-synpulse-runner
+  when: manual
+  stage: deploy
+  tags:
+  - sp-deployer
+  only:
+  - master
+  script:
+  - aws configure set aws_access_key_id $AWS_ID
+  - aws configure set aws_secret_access_key $AWS_KEY
+  - aws configure set region $AWS_REGION
+  - aws configure set output json
+  - aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+  - cd env
+  - kustomize build overlays/production
+  - kustomize build overlays/production | kubectl apply -n synpulse-ns -f -
+  - kubectl rollout status deployment flowable-engage -n synpulse-ns --insecure-skip-tls-verify=true
+deploy-custom-ui:
+  image: registry.gitlab.com/sp_git_repo/flowable-kube-runner/kubectl-synpulse-runner
+  when: manual
+  stage: deploy
+  tags:
+  - sp-deployer
+  dependencies:
+  - dockerize-custom-ui
+  except:
+  - master
+  script:
+  - aws configure set aws_access_key_id $AWS_ID_DEV
+  - aws configure set aws_secret_access_key $AWS_KEY_DEV
+  - aws configure set region $AWS_REGION_DEV
+  - aws configure set output json
+  - aws eks --region $AWS_REGION_DEV update-kubeconfig --name $CLUSTER_NAME_DEV
+  - cd env
+  - kubectl scale deployments flowable-engage --replicas=0 -n synpulse-ns --insecure-skip-tls-verify=true
+  - cd overlays/customui
+  - kustomize edit set image registry.gitlab.com/sp_git_repo/flowablesynpulse/flowable-engage:latest=${CI_REGISTRY_IMAGE}/${CI_COMMIT_BRANCH}/${IMAGE_NAME}:UI-${CI_PIPELINE_ID}
+  - kustomize build .
+  - kustomize build . | kubectl apply -n synpulse-ns -f -
+  - kubectl rollout status deployment flowable-engage -n synpulse-ns --insecure-skip-tls-verify=true
+deploy-dev:
+  image: registry.gitlab.com/sp_git_repo/flowable-kube-runner/kubectl-synpulse-runner
+  when: manual
+  stage: deploy
+  tags:
+  - sp-deployer
+  only:
+  - development
+  script:
+  - aws configure set aws_access_key_id $AWS_ID_DEV
+  - aws configure set aws_secret_access_key $AWS_KEY_DEV
+  - aws configure set region $AWS_REGION_DEV
+  - aws configure set output json
+  - aws eks --region $AWS_REGION_DEV update-kubeconfig --name $CLUSTER_NAME_DEV
+  - cd env
+  - kubectl scale deployments flowable-engage --replicas=0 -n synpulse-ns --insecure-skip-tls-verify=true
+  - cd overlays/development
+  - kustomize edit set image registry.gitlab.com/sp_git_repo/flowablesynpulse/development/flowable-engage:latest=${CI_REGISTRY_IMAGE}/$CI_COMMIT_BRANCH/${IMAGE_NAME}:${CI_PIPELINE_ID}
+  - kustomize build .
+  - kustomize build . | kubectl apply -n synpulse-ns -f -
+  - kubectl rollout status deployment flowable-engage -n synpulse-ns --insecure-skip-tls-verify=true
+clean:
+  image: registry.gitlab.com/sp_git_repo/flowable-kube-runner/kubectl-synpulse-runner
+  when: manual
+  stage: clean
+  tags:
+  - sp-deployer
+  only:
+  - master
+  script:
+  - aws configure set aws_access_key_id $AWS_ID
+  - aws configure set aws_secret_access_key $AWS_KEY
+  - aws configure set region $AWS_REGION
+  - aws configure set output json
+  - aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+  - kubectl scale deployments --all --replicas=0 -n synpulse-ns
+  - kubectl delete pvc postgres -n synpulse-ns
+  - cd env
+  - kubectl delete -f base/ingress/ingress.yaml -n synpulse-ns
+  - sleep 10
+  - kustomize build overlays/production
+  - kustomize build overlays/production | kubectl apply -n synpulse-ns -f -
+  - kubectl rollout status deployment flowable-engage -n synpulse-ns
+clean-dev:
+  image: registry.gitlab.com/sp_git_repo/flowable-kube-runner/kubectl-synpulse-runner
+  when: manual
+  stage: clean
+  tags:
+  - sp-deployer
+  only:
+  - development
+  script:
+  - aws configure set aws_access_key_id $AWS_ID_DEV
+  - aws configure set aws_secret_access_key $AWS_KEY_DEV
+  - aws configure set region $AWS_REGION_DEV
+  - aws configure set output json
+  - aws eks --region $AWS_REGION_DEV update-kubeconfig --name $CLUSTER_NAME_DEV
+  - kubectl scale deployments --all --replicas=0 -n synpulse-ns
+  - kubectl delete pvc postgres -n synpulse-ns
+  - sleep 10
+  - cd env
+  - cd overlays/development
+  - kustomize edit set image registry.gitlab.com/sp_git_repo/flowablesynpulse/development/flowable-engage:latest=${CI_REGISTRY_IMAGE}/$CI_COMMIT_BRANCH/${IMAGE_NAME}:${CI_PIPELINE_ID}
+  - kustomize build .
+  - kustomize build . | kubectl apply -n synpulse-ns -f -
+  - kubectl rollout status deployment flowable-engage -n synpulse-ns

@@ -1,0 +1,53 @@
+jenkins:
+  systemMessage: "Welcome to the demo setup for Jenkins Configuration as Code plugin."
+  securityRealm:
+    local:
+      allowsSignup: true
+      users:
+       - id: ${JENKINS_ADMIN_ID}
+         password: ${JENKINS_ADMIN_PASSWORD}
+       - id: ${JENKINS_USER_ID}
+         password: ${JENKINS_USER_PASSWORD}
+       - id: "dev"
+         password: "dev"
+  authorizationStrategy:
+    globalMatrix:
+      permissions:
+        - "Overall/Administer:admin"
+        - "Overall/Read:authenticated"
+        - "Overall/Administer:authenticated"
+        - "Job/Build:dev"
+        - "Job/Cancel:dev"
+        - "Job/Read:dev"
+        - "Job/Workspace:dev"
+        - "Run/Replay:dev"
+        - "Run/Update:dev"
+        - "Overall/Read:anonymous"
+        - "Job/Read:anonymous"
+        - "View/Read:anonymous"
+      # grantedPermissions:
+  remotingSecurity:
+    enabled: true     
+
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - usernamePassword:
+              scope: GLOBAL
+              id: "docker-hub-credentials"
+              username: ernesen
+              password: ${DOCKER_HUB}
+              description: "docker-hub-credentials"
+          - string:
+              scope: GLOBAL
+              id: "slack-token"
+              secret: "CHANGE_ME"
+security:
+  queueItemAuthenticator:
+    authenticators:
+    - global:
+        strategy: triggeringUsersAuthorizationStrategy
+unclassified:
+  location:
+    url: http://127.0.0.1:8080/

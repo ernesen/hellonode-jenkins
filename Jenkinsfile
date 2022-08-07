@@ -27,17 +27,19 @@ node {
 
         checkout scm
     }
-  stage ('Build mvn') {
-    git url: 'https://github.com/cyrille-leclerc/multi-module-maven-project'
-    withMaven {
-      sh "mvn clean verify"
-    } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe reports and FindBugs reports
-  }
+    
+  //stage ('Build mvn') {
+  //  git url: 'https://github.com/cyrille-leclerc/multi-module-maven-project'
+  //  withMaven {
+  //    sh "mvn clean verify"
+  //  } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe reports and FindBugs reports
+  //}
+    
     stage('Build') {
         // sh "echo - Build"
     //    withEnv(["DISABLE_AUTH=true"]) {
     //      echo env.DISABLE_AUTH   }
-     sh 'npm install'
+     sh 'npm -v'
     //  newgroup docker
    }
 

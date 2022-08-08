@@ -9,7 +9,7 @@ node {
     }
 
     stage('Run Pipeline') {
-        build job: 'E2E_tests_pipeline', parameters: [string(name: 'MY_PARAM', value: 'value from Build pipeline')]
+        build job: 'E2E_tests_pipeline', parameters: [string(name: 'MY_PARAM', value: 'value from Build pipeline')], propagate: true
     }
     
     stage('Run groovy-file-name.groovy') {

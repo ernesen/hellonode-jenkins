@@ -17,6 +17,7 @@ node {
     
     stage('Run groovy-file-name.groovy') {
         def pipeline = load 'groovy-file-name.groovy'
+        sh 'echo "${app}" > toto.txt' 
     } 
     
     stage('Run Jenkins.p1') {

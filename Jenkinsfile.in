@@ -1,0 +1,16 @@
+#!groovy
+
+node {
+
+   stage('Build - Jenkins in Jenkins ') {
+     sh 'echo Build - Jenkins in Jenkins '
+   }
+   
+   stage('Run npm') {
+     sh 'npm -v'
+   }
+   
+   stage('Run Java') {
+     sh 'java -v'
+   }
+}

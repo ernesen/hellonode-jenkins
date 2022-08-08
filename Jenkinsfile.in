@@ -11,6 +11,6 @@ node {
    }
    
    stage('Run Java') {
-     sh 'java -v'
+     sh 'java -version'
    }
 }

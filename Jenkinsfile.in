@@ -4,6 +4,7 @@ node {
 
    stage('Build - Jenkins in Jenkins ') {
      sh 'echo Build - Jenkins in Jenkins '
+     sh "echo MY_PARAM=$MY_PARAM" 
    }
    
    stage('Run npm') {

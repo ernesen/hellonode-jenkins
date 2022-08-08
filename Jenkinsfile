@@ -12,7 +12,7 @@ node {
         build job: 'E2E_tests_pipeline', parameters: [string(name: 'MY_PARAM', value: 'value from Build pipeline')]
     }
     
-    stage('Run Pipeline') {
+    stage('Run groovy-file-name.groovy') {
         def pipeline = load 'groovy-file-name.groovy'
         pipeline.pipeline()
     }    

@@ -4,7 +4,9 @@ node {
 
    stage('Build - Jenkins in Jenkins ') {
      sh 'echo Build - Jenkins in Jenkins '
-      sh "echo MY_PARAM=${MY_PARAM}" 
+      sh "echo MY_PARAM=${param1}" 
+      
+//       "param1=${env.PARAM1}\nparam2='param2'"
    }
    
    stage('Run npm') {

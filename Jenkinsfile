@@ -16,7 +16,7 @@ node {
         def pipeline = load 'groovy-file-name.groovy'
     } 
     
-    stage('Run Jenkins.node') {
-        def pipeline = load 'groovy-file-name.groovy'
+    stage('Run Jenkins.p1') {
+        def pipeline = load 'Jenkinsfile.p1'
     } 
 }

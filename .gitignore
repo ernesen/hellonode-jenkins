@@ -18,5 +18,5 @@ target
 ./script/*
 *.sh
 flowablesynpulse-master/
-credential-name.xml
-Dockerfile.jenkins_old
+links.txt
+run_org.sh

@@ -25,7 +25,6 @@ jenkins:
         - "Overall/Read:anonymous"
         - "Job/Read:anonymous"
         - "View/Read:anonymous"
-      # grantedPermissions:
   remotingSecurity:
     enabled: true     
 

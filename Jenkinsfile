@@ -14,7 +14,9 @@ node {
     stage('Run Pipeline') {
 //         build job: 'E2E_tests_pipeline', parameters: [string(name: 'MY_PARAM', value: 'value from Build pipeline')], propagate: true
 //         def handle = triggerRemoteJob(remoteJenkinsName: 'E2E_tests_pipeline', job: 'RemoteJob' paramters: "param1=${env.PARAM1}\nparam2='param2'")
-           def handle = triggerRemoteJob(remoteJenkinsName: 'remoteJenkins', job: 'E2E_tests_pipeline' paramters: "param1=${env.PARAM1}\nparam2='param2'")
+//            def handle = triggerRemoteJob(remoteJenkinsName: 'remoteJenkins', job: 'E2E_tests_pipeline' paramters: "param1=${env.PARAM1}\nparam2='param2'")
+           def handle = triggerRemoteJob(E2E_tests_pipeline: 'remoteJenkins', job: 'RemoteJob' paramters: "param1=${env.PARAM1}\nparam2='param2'")
+
 
     }
     

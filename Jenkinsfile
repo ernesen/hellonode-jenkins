@@ -11,4 +11,9 @@ node {
     stage('Run Pipeline') {
         build job: 'E2E_tests_pipeline', parameters: [string(name: 'MY_PARAM', value: 'value from Build pipeline')]
     }
+    
+    stage('Run Pipeline') {
+        def pipeline = load 'groovy-file-name.groovy'
+        pipeline.pipeline()
+    }    
 }

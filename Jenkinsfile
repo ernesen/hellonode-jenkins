@@ -10,12 +10,15 @@ node {
         /* Let's make sure we have the repository cloned to our workspace */
         checkout scm
     }
-//   stage ('Build mvn') {
-//     git url: 'https://github.com/cyrille-leclerc/multi-module-maven-project'
-//     withMaven {
-//       sh "mvn clean verify"
-//     } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe reports and FindBugs reports
-//   }
+
+    
+  //stage ('Build mvn') {
+  //  git url: 'https://github.com/cyrille-leclerc/multi-module-maven-project'
+  //  withMaven {
+  //    sh "mvn clean verify"
+  //  } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe reports and FindBugs reports
+  //}
+    
 
     stage('Build') {
     //    withEnv(["DISABLE_AUTH=true"]) {

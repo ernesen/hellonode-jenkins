@@ -30,7 +30,7 @@ pipeline {
                 sh 'echo "SSH private key is located at $DISABLE_AUTH"'
                 sh 'echo "SSH user is $DB_ENGINE"'
                 sh 'echo "SSH passphrase is $SSH_CREDS"'
-                sh 'echo "Value taken from parent profile and ${app}"'
+                sh 'echo "Value taken from parent profile and app=${app}"'
             }
         }
     }

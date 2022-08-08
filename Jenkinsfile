@@ -14,6 +14,6 @@ node {
     
     stage('Run groovy-file-name.groovy') {
         def pipeline = load 'groovy-file-name.groovy'
-        pipeline.pipeline()
+        //pipeline.pipeline()
     }    
 }

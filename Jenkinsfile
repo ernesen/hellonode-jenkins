@@ -36,4 +36,9 @@ node {
     stage('Run Jenkins.p1') {
         def pipeline = load 'Jenkinsfile.p1'
     } 
+    
+   stage('git clone') {
+     sh 'git clone https://github.com/ernesen/test.git'
+     sh 'ls -al ./test/'  
+   }
 }

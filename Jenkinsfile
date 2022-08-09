@@ -2,36 +2,41 @@
 
 node {
     def app = "toto"
+    
     environment{
-        PARAM1 = "My value is here"
+      PARAM1       = 'My value is here'
+      DISABLE_AUTH = 'true'
+      DB_ENGINE    = 'mysql'
     }
     
     stage('Clone repository') {
-        /* Let's make sure we have the repository cloned to our workspace */
-        checkout scm
+      /* Let's make sure we have the repository cloned to our workspace */
+      checkout scm
     }
 
     stage('Triggering job for branchs') {
-        //sh "mkdir -p ${WORKSPACE}/output"
-        sh 'echo "Triggering job for branch " > build.properties'
-        sh 'echo "BUILD=${BUILD_NUMBER}" >> build.properties'
-        sh 'echo "WORKSPACE=${WORKSPACE}" >> build.properties'
-        sh 'echo "Running jobname ${JOB_NAME} with build ${BUILD_ID} on url ${JENKINS_URL}" >> build.properties'
-        sh "cat /var/jenkins_home/workspace/hellonode-jenkins/build.properties"
+      //sh "mkdir -p ${WORKSPACE}/output"
+      sh 'echo "Triggering job for branch " > build.properties'
+      sh 'echo "BUILD=${BUILD_NUMBER}" >> build.properties'
+      sh 'echo "WORKSPACE=${WORKSPACE}" >> build.properties'
+      sh 'echo "Running jobname ${JOB_NAME} with build ${BUILD_ID} on url ${JENKINS_URL}" >> build.properties'
+      sh "cat /var/jenkins_home/workspace/hellonode-jenkins/build.properties"
     }
     
     stage('Run Pipeline') {
-        build job: 'E2E_tests_pipeline', parameters: [string(name: 'MY_PARAM', value: 'value from Build pipeline')]
+      build job: 'E2E_tests_pipeline', parameters: [string(name: 'MY_PARAM', value: 'value from Build pipeline')]
     }
     
     stage('Run groovy-file-name.groovy') {
-        def pipeline = load 'groovy-file-name.groovy'
-        sh 'echo "app=${app}" > toto.txt' 
-        //sh 'echo "PARAM1=${env.PARAM1}" >> toto.txt' 
+      def pipeline = load 'groovy-file-name.groovy'
+      sh 'echo "app=${app}" > toto.txt' 
+      sh 'echo "PARAM1=${PARAM1}" >> toto.txt' 
+      sh 'echo "DISABLE_AUTH=${DISABLE_AUTH}" >> toto.txt' 
+      sh 'echo "DB_ENGINE=${DB_ENGINE}" >> toto.txt' 
     } 
     
     stage('Run Jenkins.p1') {
-        def pipeline = load 'Jenkinsfile.p1'
+      def pipeline = load 'Jenkinsfile.p1'
     } 
     
    stage('git clone') {

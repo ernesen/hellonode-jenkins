@@ -1,5 +1,6 @@
 #!groovy
 
+def gobal_app = "gobal_app toto"
 node {
     def app = "toto"
     
@@ -28,7 +29,8 @@ node {
     }
  
     stage('Run local variables') {
-      sh 'echo "app=${app}" > toto.txt' 
+      sh(echo "gobal_app=${gobal_app}" > toto.txt)
+      sh 'echo "app=${app}" >> toto.txt' 
       sh 'echo "PARAM1=${PARAM1}" >> toto.txt' 
       sh 'echo "DISABLE_AUTH=${DISABLE_AUTH}" >> toto.txt' 
       sh 'echo "DB_ENGINE=${DB_ENGINE}" >> toto.txt' 
@@ -36,7 +38,7 @@ node {
     
     stage('Run groovy-file-name.groovy') {
       def pipeline = load 'groovy-file-name.groovy'
-      //sh 'echo "app=${app}" > toto.txt' 
+      //sh 'echo "gobal_app=${gobal_app}" > toto.txt' 
       sh 'echo "PARAM1=${PARAM1}" >> toto.txt' 
       sh 'echo "DISABLE_AUTH=${DISABLE_AUTH}" >> toto.txt' 
       sh 'echo "DB_ENGINE=${DB_ENGINE}" >> toto.txt' 

@@ -39,6 +39,6 @@ node {
     
    stage('git clone') {
      sh 'git clone https://github.com/ernesen/test.git'
-     sh 'ls -al ./test/'  
+     sh 'ls -al ${WORKSPACE}/test/'  
    }
 }

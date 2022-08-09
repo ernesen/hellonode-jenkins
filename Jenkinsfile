@@ -14,19 +14,18 @@ node {
       /* Let's make sure we have the repository cloned to our workspace */
       checkout scm
     }
-/*
+    
     stage('Triggering job for branchs') {
-      //sh "mkdir -p ${WORKSPACE}/output"
       sh "echo 'Triggering job for branch' > build.properties"
       sh "echo 'BUILD_NUMBER=${BUILD_NUMBER}' >> build.properties"
       sh "echo 'WORKSPACE=${WORKSPACE}' >> build.properties"
       sh "echo 'JOB_NAME=${JOB_NAME}' >> build.properties"
       sh "echo 'BUILD_ID=${BUILD_ID}' >> build.properties"
-      sh "echo 'JENKINS_URL=${JENKINS_URL' >> build.properties"
+      sh "echo 'JENKINS_URL=${JENKINS_URL}' >> build.properties"
       sh "ehho 'GIT_URL=${GIT_URL}' >> build.properties" 
       sh "cat /var/jenkins_home/workspace/hellonode-jenkins/build.properties"
     }
- */   
+    
     stage('Run Pipeline') {
       build job: 'E2E_tests_pipeline', parameters: [string(name: 'MY_PARAM', value: 'value from Build pipeline')]
     }

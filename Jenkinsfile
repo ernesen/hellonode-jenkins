@@ -26,10 +26,17 @@ node {
     stage('Run Pipeline') {
       build job: 'E2E_tests_pipeline', parameters: [string(name: 'MY_PARAM', value: 'value from Build pipeline')]
     }
+ 
+    stage('Run local variables') {
+      sh 'echo "app=${app}" > toto.txt' 
+      sh 'echo "PARAM1=${PARAM1}" >> toto.txt' 
+      sh 'echo "DISABLE_AUTH=${DISABLE_AUTH}" >> toto.txt' 
+      sh 'echo "DB_ENGINE=${DB_ENGINE}" >> toto.txt' 
+    } 
     
     stage('Run groovy-file-name.groovy') {
       def pipeline = load 'groovy-file-name.groovy'
-      sh 'echo "app=${app}" > toto.txt' 
+      //sh 'echo "app=${app}" > toto.txt' 
       sh 'echo "PARAM1=${PARAM1}" >> toto.txt' 
       sh 'echo "DISABLE_AUTH=${DISABLE_AUTH}" >> toto.txt' 
       sh 'echo "DB_ENGINE=${DB_ENGINE}" >> toto.txt' 

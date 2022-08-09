@@ -4,11 +4,11 @@ def gobal_app = "gobal_app toto"
 node {
     def app = "toto"
     
-    environment{
+    //environment{
       PARAM1       = 'My value is here'
       DISABLE_AUTH = 'true'
       DB_ENGINE    = 'mysql'
-    }
+    //}
     
     stage('Clone repository') {
       /* Let's make sure we have the repository cloned to our workspace */

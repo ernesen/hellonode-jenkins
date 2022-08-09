@@ -12,15 +12,11 @@ node {
     }
 
     stage('Triggering job for branchs') {
-        //sh "chmod -R 777 ${WORKSPACE}" 
         //sh "mkdir -p ${WORKSPACE}/output"
-        // Write an useful file, which is needed to be archived.
-        //writeFile file: "output/usefulfile.txt", text: "This file is useful, need to archive it."
-        //sh(returnStdout: true, script: "touch build.properties").trim();
-        sh(returnStdout: true, script: 'echo "Triggering job for branch " > build.properties').trim();
-        sh(returnStdout: true, script: 'echo "BUILD=${BUILD_NUMBER}" >> build.properties').trim();
-        sh(returnStdout: true, script: 'echo "WORKSPACE=${WORKSPACE}" >> build.properties').trim();
-        sh(returnStdout: true, script: 'echo "Running jobname ${JOB_NAME} with build ${BUILD_ID} on url ${JENKINS_URL}" >> build.properties').trim();
+        sh 'echo "Triggering job for branch " > build.properties'
+        sh 'echo "BUILD=${BUILD_NUMBER}" >> build.properties'
+        sh 'echo "WORKSPACE=${WORKSPACE}" >> build.properties'
+        sh 'echo "Running jobname ${JOB_NAME} with build ${BUILD_ID} on url ${JENKINS_URL}" >> build.properties'
         sh "cat /var/jenkins_home/workspace/hellonode-jenkins/build.properties"
     }
     
@@ -31,6 +27,7 @@ node {
     stage('Run groovy-file-name.groovy') {
         def pipeline = load 'groovy-file-name.groovy'
         sh 'echo "${app}" > toto.txt' 
+        sh 'echo "${env.PARAM1}" >> toto.txt' 
     } 
     
     stage('Run Jenkins.p1') {

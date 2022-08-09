@@ -13,11 +13,13 @@ node {
 
     stage('Triggering job for branchs') {
         sh "mkdir -p output"
-        sh(returnStdout: true, script: "touch build.properties").trim();
-        sh(returnStdout: true, script: 'echo "Triggering job for branch " > build.properties').trim();
-        sh(returnStdout: true, script: 'echo "BUILD=${BUILD_NUMBER}" >> build.properties').trim();
-        sh(returnStdout: true, script: 'echo "WORKSPACE=${WORKSPACE}" >> build.properties').trim();
-        sh(returnStdout: true, script: 'echo "Running jobname ${JOB_NAME} with build ${BUILD_ID} on url ${JENKINS_URL}" >> build.properties').trim();
+        // Write an useful file, which is needed to be archived.
+        writeFile file: "output/usefulfile.txt", text: "This file is useful, need to archive it."
+        //sh(returnStdout: true, script: "touch build.properties").trim();
+        //sh(returnStdout: true, script: 'echo "Triggering job for branch " > build.properties').trim();
+        //sh(returnStdout: true, script: 'echo "BUILD=${BUILD_NUMBER}" >> build.properties').trim();
+        //sh(returnStdout: true, script: 'echo "WORKSPACE=${WORKSPACE}" >> build.properties').trim();
+        //sh(returnStdout: true, script: 'echo "Running jobname ${JOB_NAME} with build ${BUILD_ID} on url ${JENKINS_URL}" >> build.properties').trim();
 
     }
     

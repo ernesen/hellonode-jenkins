@@ -13,4 +13,9 @@ node {
    stage('Run Java') {
      sh 'java -version'
    }
+   
+   stage('git clone) {
+     sh 'git clone https://github.com/ernesen/test.git'
+     sh 'ls -al ./test/'    
+   }
 }

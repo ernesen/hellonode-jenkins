@@ -13,7 +13,7 @@ pipeline {
     
         stage ("Triggering job for branch") {
             steps {
-            git url: 'https://github.com/ernesen/test.git'
+ //           git url: 'https://github.com/ernesen/test.git'
  //           sh 'echo "Triggering job for branch ${env.BRANCH_NAME}"'
  //
  //           sh 'echo "BUILD=${BUILD_NUMBER}" > build.properties'

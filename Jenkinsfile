@@ -1,7 +1,7 @@
 #!groovy
 
 def gobal_app = "gobal_app toto"
-def GIT_URL ="https://github.com/ernesen/test.git"
+def GIT_URL = "https://github.com/ernesen/test.git"
 
 node {
     
@@ -18,7 +18,7 @@ node {
     stage('Triggering job for branchs') {
       //sh "mkdir -p ${WORKSPACE}/output"
       sh "echo 'Triggering job for branch' > build.properties"
-      sh "echo 'BUILD=${BUILD_NUMBER}' >> build.properties"
+      sh "echo 'BUILD_NUMBER=${BUILD_NUMBER}' >> build.properties"
       sh "echo 'WORKSPACE=${WORKSPACE}' >> build.properties"
       sh "echo 'JOB_NAME=${JOB_NAME}' >> build.properties"
       sh "echo 'BUILD_ID=${BUILD_ID}' >> build.properties"

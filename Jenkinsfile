@@ -35,11 +35,11 @@ node {
       echo "DISABLE_AUTH=${DISABLE_AUTH}"
       echo "DB_ENGINE=${DB_ENGINE}"
         
-      sh 'echo "gobal_app=${gobal_app}" > toto.txt'
-      sh 'echo "app=${app}" >> toto.txt' 
-      sh 'echo "PARAM1=${PARAM1}" >> toto.txt' 
-      sh 'echo "DISABLE_AUTH=${DISABLE_AUTH}" >> toto.txt' 
-      sh 'echo "DB_ENGINE=${DB_ENGINE}" >> toto.txt' 
+      sh "echo 'gobal_app=${gobal_app}' > toto.txt"
+      sh "echo 'app=${app}' >> toto.txt" 
+      sh "echo 'PARAM1=${PARAM1}' >> toto.txt" 
+      sh "echo 'DISABLE_AUTH=${DISABLE_AUTH}' >> toto.txt" 
+      sh "echo 'DB_ENGINE=${DB_ENGINE}' >> toto.txt" 
     } 
     
     stage('Run groovy-file-name.groovy') {

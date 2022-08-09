@@ -16,6 +16,7 @@ node {
         sh 'echo "BUILD=${BUILD_NUMBER}" >> build.properties'
         sh 'echo "WORKSPACE=${WORKSPACE}" >> build.properties'
         sh 'echo "Running jobname ${JOB_NAME} with build ${BUILD_ID} on url ${JENKINS_URL}" >> build.properties'
+        sh(returnStdout: true, script: "touch build.properties").trim();
     }
     
     stage('Run Pipeline') {

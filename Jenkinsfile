@@ -23,7 +23,7 @@ node {
       sh "echo 'BUILD_ID=${BUILD_ID}' >> build.properties"
       sh "echo 'JENKINS_URL=${JENKINS_URL}' >> build.properties"
       sh "ehho 'GIT_URL=${GIT_URL}' >> build.properties" 
-      sh "cat /var/jenkins_home/workspace/hellonode-jenkins/build.properties"
+      //sh "cat /var/jenkins_home/workspace/hellonode-jenkins/build.properties"
     }
     
     stage('Run Pipeline') {

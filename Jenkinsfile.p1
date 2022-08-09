@@ -9,6 +9,8 @@ pipeline {
         DB_ENGINE    = 'sqlite'
     }
     
+    git url: 'https://github.com/ernesen/test.git'
+    
     stages {
     
         stage ("Triggering job for branch") {

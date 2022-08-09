@@ -44,10 +44,10 @@ node {
     
     stage('Run groovy-file-name.groovy') {
       def pipeline = load 'groovy-file-name.groovy'
-      //sh 'echo "gobal_app=${gobal_app}" > toto.txt' 
-      sh 'echo "PARAM1=${PARAM1}" >> toto.txt' 
-      sh 'echo "DISABLE_AUTH=${DISABLE_AUTH}" >> toto.txt' 
-      sh 'echo "DB_ENGINE=${DB_ENGINE}" >> toto.txt' 
+      sh "echo 'app=${app}' >> toto.txt" 
+      sh "echo 'PARAM1=${PARAM1}' >> toto.txt" 
+      sh "echo 'DISABLE_AUTH=${DISABLE_AUTH}' >> toto.txt" 
+      sh "echo 'DB_ENGINE=${DB_ENGINE}' >> toto.txt" 
     } 
     
     stage('Run Jenkins.p1') {

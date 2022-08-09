@@ -12,7 +12,7 @@ node {
     }
 
     stage('Triggering job for branchs') {
-        echo "Triggering job for branch ${BRANCH_NAME}"
+        echo "Triggering job for branch "
         echo "BUILD=${BUILD_NUMBER}" > build.properties
         echo "WORKSPACE=${WORKSPACE}" >> build.properties
         echo "Running jobname ${JOB_NAME} with build ${BUILD_ID} on url ${JENKINS_URL}" >> build.properties

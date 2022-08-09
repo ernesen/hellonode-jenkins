@@ -55,4 +55,8 @@ node {
      sh "ls -al ${WORKSPACE}/test/"  
      sh "cat ${WORKSPACE}/test/README.md"    
    }
+    
+   stage('name value pair') {
+      def pipeline = load 'Jenkinsfile.pair'  
+   }
 }

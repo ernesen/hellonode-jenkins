@@ -40,7 +40,7 @@ pipeline {
                 sh 'echo "SSH private key is located at $DISABLE_AUTH"'
                 sh 'echo "SSH user is $DB_ENGINE"'
                 sh 'echo "SSH passphrase is $SSH_CREDS"'
-                sh 'cat toto.txt'
+                sh 'ls -al'
             }
         }
     }

@@ -1,14 +1,14 @@
 #!groovy
 
 def gobal_app = "gobal_app toto"
+def GIT_URL ="https://github.com/ernesen/test.git"
+
 node {
-    def app = "toto"
     
-    //environment{
-      PARAM1       = 'My value is here'
-      DISABLE_AUTH = 'true'
-      DB_ENGINE    = 'mysql'
-    //}
+    def app = "toto"
+    PARAM1       = 'My value is here'
+    DISABLE_AUTH = 'true'
+    DB_ENGINE    = 'mysql'
     
     stage('Clone repository') {
       /* Let's make sure we have the repository cloned to our workspace */
@@ -34,16 +34,11 @@ node {
       echo "PARAM1=${PARAM1}" 
       echo "DISABLE_AUTH=${DISABLE_AUTH}"
       echo "DB_ENGINE=${DB_ENGINE}"
-        
-      sh "echo 'gobal_app=${gobal_app}' > toto.txt"
-      sh "echo 'app=${app}' >> toto.txt" 
-      sh "echo 'PARAM1=${PARAM1}' >> toto.txt" 
-      sh "echo 'DISABLE_AUTH=${DISABLE_AUTH}' >> toto.txt" 
-      sh "echo 'DB_ENGINE=${DB_ENGINE}' >> toto.txt" 
     } 
     
     stage('Run groovy-file-name.groovy') {
       def pipeline = load 'groovy-file-name.groovy'
+      sh "echo 'gobal_app=${gobal_app}' > toto.txt" 
       sh "echo 'app=${app}' >> toto.txt" 
       sh "echo 'PARAM1=${PARAM1}' >> toto.txt" 
       sh "echo 'DISABLE_AUTH=${DISABLE_AUTH}' >> toto.txt" 
@@ -55,9 +50,9 @@ node {
     } 
     
    stage('git clone') {
-     sh 'rm -rf ${WORKSPACE}/test/'  
-     sh 'git clone https://github.com/ernesen/test.git'
-     sh 'ls -al ${WORKSPACE}/test/'  
-     sh 'cat ${WORKSPACE}/test/README.md'    
+     sh "rm -rf ${WORKSPACE}/test/"  
+     sh "git clone ${GIT_URL}"
+     sh "ls -al ${WORKSPACE}/test/"  
+     sh "cat ${WORKSPACE}/test/README.md"    
    }
 }

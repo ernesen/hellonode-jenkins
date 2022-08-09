@@ -14,10 +14,7 @@ node {
      sh 'java -version'
    }
    
-   stage('git clone') {
-     sh 'git clone https://github.com/ernesen/test.git'
-     sh 'ls -al ./test/'  
-     sh 'echo "I am trying to get this working here"' 
+   stage('Run kustomise') {
      sh 'kustomize version'
    }
 }

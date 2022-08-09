@@ -57,6 +57,7 @@ node {
    }
     
    stage('name value pair') {
-      def pipeline = load 'Jenkinsfile.pair'  
+      sh "chmod +x ./properties.sh"
+      sh "./properties.sh"  
    }
 }

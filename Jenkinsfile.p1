@@ -37,6 +37,7 @@ pipeline {
                 sh 'echo "SSH user is $DB_ENGINE"'
                 sh 'echo "SSH passphrase is $SSH_CREDS"'
                 sh 'ls -al'
+                sh "cat /var/jenkins_home/workspace/hellonode-jenkins/build.properties"
             }
         }
     }

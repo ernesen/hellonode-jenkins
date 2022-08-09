@@ -12,7 +12,7 @@ node {
     }
 
     stage('Triggering job for branchs') {
-        sh "mkdir -p output"
+        sh "mkdir -p ${WORKSPACE}/output"
         // Write an useful file, which is needed to be archived.
         writeFile file: "output/usefulfile.txt", text: "This file is useful, need to archive it."
         //sh(returnStdout: true, script: "touch build.properties").trim();

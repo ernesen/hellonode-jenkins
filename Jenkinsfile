@@ -29,7 +29,7 @@ node {
     }
  
     stage('Run local variables') {
-      sh(echo "gobal_app=${gobal_app}" > toto.txt)
+      sh 'echo "gobal_app=${gobal_app}" > toto.txt'
       sh 'echo "app=${app}" >> toto.txt' 
       sh 'echo "PARAM1=${PARAM1}" >> toto.txt' 
       sh 'echo "DISABLE_AUTH=${DISABLE_AUTH}" >> toto.txt' 

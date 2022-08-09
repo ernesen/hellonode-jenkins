@@ -1,7 +1,7 @@
 #!groovy
 
 def gobal_app = "gobal_app toto"
-REPO_URL   = "https://github.com/ernesen/test.git"
+REPO_URL      = "https://github.com/ernesen/test.git"
 
 node {
     
@@ -58,7 +58,7 @@ node {
    }
     
    stage('name value pair') {
-      sh "chmod +x ./properties.sh"
-      sh "./properties.sh"  
+     sh "chmod +x ./properties.sh"
+     sh "./properties.sh"  
    }
 }

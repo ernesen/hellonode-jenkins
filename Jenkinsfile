@@ -31,9 +31,9 @@ node {
     stage('Run local variables') {
       echo "gobal_app=${gobal_app}"
       echo "app=${app}"
-      echo "PARAM1=${env.PARAM1}" 
-      echo "DISABLE_AUTH=${env.DISABLE_AUTH}"
-      echo "DB_ENGINE=${env.DB_ENGINE}"
+      echo "PARAM1=${PARAM1}" 
+      echo "DISABLE_AUTH=${DISABLE_AUTH}"
+      echo "DB_ENGINE=${DB_ENGINE}"
         
       sh 'echo "gobal_app=${gobal_app}" > toto.txt'
       sh 'echo "app=${app}" >> toto.txt' 

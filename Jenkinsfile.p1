@@ -19,7 +19,7 @@ pipeline {
  //           sh 'echo "BUILD=${BUILD_NUMBER}" > build.properties'
  //           sh 'echo "WORKSPACE=${WORKSPACE}" >> build.properties'
  //           sh 'echo "Running jobname ${env.JOB_NAME} with build ${env.BUILD_ID} on url ${env.JENKINS_URL}" >> build.properties'
-              sh 'sh "ls -al"'
+              sh 'ls -al'
             }
         }  
 /*

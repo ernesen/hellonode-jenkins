@@ -1,11 +1,11 @@
 #!groovy
 
 def gobal_app = "gobal_app toto"
-def GIT_URL = "https://github.com/ernesen/test.git"
+def GIT_URL   = "https://github.com/ernesen/test.git"
 
 node {
     
-    def app = "toto"
+    def app      = "toto"
     PARAM1       = 'My value is here'
     DISABLE_AUTH = 'true'
     DB_ENGINE    = 'mysql'

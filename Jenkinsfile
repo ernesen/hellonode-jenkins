@@ -12,6 +12,7 @@ node {
     }
 
     stage('Triggering job for branchs') {
+        sh "mkdir -p output"
         sh(returnStdout: true, script: "touch build.properties").trim();
         sh(returnStdout: true, script: 'echo "Triggering job for branch " > build.properties').trim();
         sh(returnStdout: true, script: 'echo "BUILD=${BUILD_NUMBER}" >> build.properties').trim();

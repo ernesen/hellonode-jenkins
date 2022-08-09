@@ -22,8 +22,6 @@ node {
       sh "echo 'JOB_NAME=${JOB_NAME}' >> build.properties"
       sh "echo 'BUILD_ID=${BUILD_ID}' >> build.properties"
       sh "echo 'JENKINS_URL=${JENKINS_URL}' >> build.properties"
-      sh "echo 'REPO_URL=${REPO_URL}' >> build.properties"
-      //sh "ehho 'REPO_URL=${REPO_URL}' >> build.properties" 
       sh "cat ${WORKSPACE}/build.properties"
     }
     

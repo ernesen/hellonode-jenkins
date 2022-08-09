@@ -27,9 +27,7 @@ node {
     stage('Run groovy-file-name.groovy') {
         def pipeline = load 'groovy-file-name.groovy'
         sh 'echo "app=${app}" > toto.txt' 
-        
-        
-        sh 'echo "PARAM1=${env.PARAM1}" >> toto.txt' 
+        //sh 'echo "PARAM1=${env.PARAM1}" >> toto.txt' 
     } 
     
     stage('Run Jenkins.p1') {

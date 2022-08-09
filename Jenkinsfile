@@ -1,7 +1,7 @@
 #!groovy
 
 def gobal_app = "gobal_app toto"
-GIT_URL   = "https://github.com/ernesen/test.git"
+REPO_URL   = "https://github.com/ernesen/test.git"
 
 node {
     
@@ -22,8 +22,8 @@ node {
       sh "echo 'JOB_NAME=${JOB_NAME}' >> build.properties"
       sh "echo 'BUILD_ID=${BUILD_ID}' >> build.properties"
       sh "echo 'JENKINS_URL=${JENKINS_URL}' >> build.properties"
-      sh "ehho 'GIT_URL=${GIT_URL}' >> build.properties" 
-      sh "cat /var/jenkins_home/workspace/hellonode-jenkins/build.properties"
+      sh "ehho 'REPO_URL=${REPO_URL}' >> build.properties" 
+      sh "cat ${WORKSPACE}/build.properties"
     }
     
     stage('Run Pipeline') {
@@ -53,7 +53,7 @@ node {
     
    stage('git clone') {
      sh "rm -rf ${WORKSPACE}/test/"  
-     sh "git clone ${GIT_URL}"
+     sh "git clone ${REPO_URL}"
      sh "ls -al ${WORKSPACE}/test/"  
      sh "cat ${WORKSPACE}/test/README.md"    
    }
